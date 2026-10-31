@@ -1,3 +1,7 @@
+/****************
+ * Mã sinh viên: 202419055
+ * Họ tên: Phí Việt Hiếu
+ ****************/
 import coordinator.DeviceMonitoringCoordinator;
 import devices.AirConditionerRemote;
 import devices.ProjectorRemote;
@@ -14,7 +18,9 @@ import services.MaintenanceService;
 import java.util.ArrayList;
 import java.util.List;
 
+// Chương trình chạy thử toàn bộ hệ thống giám sát thiết bị.
 public class Main {
+    // Tạo thiết bị, đăng ký service rồi chạy lần lượt các tình huống.
     public static void main(String[] args) {
         System.out.println("He thong giam sat thiet bi phong day");
 
