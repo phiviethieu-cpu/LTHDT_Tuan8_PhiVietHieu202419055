@@ -12,7 +12,7 @@ import java.util.List;
 
 // Ghi lại lịch sử đổi trạng thái của các thiết bị.
 public class DeviceAuditLogger {
-    private List<String> entries = new ArrayList<>();
+    private final List<String> entries = new ArrayList<>();
 
     // Danh sách lịch sử, chỉ đọc.
     public List<String> getEntries() {

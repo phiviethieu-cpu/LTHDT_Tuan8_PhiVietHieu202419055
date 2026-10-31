@@ -5,10 +5,12 @@
 package devices;
 
 import enums.AlertSeverity;
-import exceptions.InvalidDeviceReadingException;
 
 // Micro không dây, cảnh báo theo mức pin và chất lượng tín hiệu.
 public class WirelessMicrophone extends TeachingDevice {
+    private static final int LOW_BATTERY = 30;
+    private static final int LOW_SIGNAL = 40;
+
     private int batteryLevel;
     private int signalQuality;
 
@@ -31,32 +33,30 @@ public class WirelessMicrophone extends TeachingDevice {
 
     // Cập nhật pin: dưới 30% báo WARNING, 0% báo CRITICAL.
     public void updateBatteryLevel(int newLevel) {
-        if (newLevel < 0 || newLevel > 100) {
-            throw new InvalidDeviceReadingException(getId(), newLevel, "Pin");
-        }
+        ReadingRules.validate(getId(), newLevel, "Pin");
 
         int oldLevel = batteryLevel;
         batteryLevel = newLevel;
 
-        if (newLevel == 0 && oldLevel != 0) {
+        AlertSeverity severity = ReadingRules.levelChange(oldLevel, newLevel, LOW_BATTERY);
+        if (severity == AlertSeverity.CRITICAL) {
             raiseAlert("Micro het pin", AlertSeverity.CRITICAL);
-        } else if (newLevel > 0 && newLevel < 30 && oldLevel >= 30) {
+        } else if (severity == AlertSeverity.WARNING) {
             raiseAlert("Pin micro yeu: " + newLevel + "%", AlertSeverity.WARNING);
         }
     }
 
     // Cập nhật tín hiệu: dưới 40% báo WARNING, 0% báo CRITICAL.
     public void updateSignalQuality(int newQuality) {
-        if (newQuality < 0 || newQuality > 100) {
-            throw new InvalidDeviceReadingException(getId(), newQuality, "Tin hieu");
-        }
+        ReadingRules.validate(getId(), newQuality, "Tin hieu");
 
         int oldQuality = signalQuality;
         signalQuality = newQuality;
 
-        if (newQuality == 0 && oldQuality != 0) {
+        AlertSeverity severity = ReadingRules.levelChange(oldQuality, newQuality, LOW_SIGNAL);
+        if (severity == AlertSeverity.CRITICAL) {
             raiseAlert("Micro mat tin hieu", AlertSeverity.CRITICAL);
-        } else if (newQuality > 0 && newQuality < 40 && oldQuality >= 40) {
+        } else if (severity == AlertSeverity.WARNING) {
             raiseAlert("Tin hieu micro yeu: " + newQuality + "%", AlertSeverity.WARNING);
         }
     }

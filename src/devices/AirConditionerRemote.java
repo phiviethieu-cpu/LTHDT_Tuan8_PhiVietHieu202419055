@@ -6,15 +6,17 @@ package devices;
 
 import enums.AlertSeverity;
 
+import java.util.Objects;
+
 // Điều khiển điều hòa, cảnh báo khi điều hòa không phản hồi.
 public class AirConditionerRemote extends TeachingDevice {
-    private String assignedRoom;
+    private final String assignedRoom;
     private boolean isResponsive;
 
     // Điều hòa mới tạo được coi là đang phản hồi.
     public AirConditionerRemote(String id, String name, String assignedRoom) {
         super(id, name);
-        this.assignedRoom = assignedRoom;
+        this.assignedRoom = Objects.requireNonNull(assignedRoom, "assignedRoom");
         this.isResponsive = true;
     }
 

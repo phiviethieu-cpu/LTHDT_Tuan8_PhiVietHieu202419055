@@ -13,7 +13,7 @@ import java.util.List;
 
 // Tạo yêu cầu bảo trì khi thiết bị có lỗi nghiêm trọng.
 public class MaintenanceService {
-    private List<String> requests = new ArrayList<>();
+    private final List<String> requests = new ArrayList<>();
 
     // Danh sách yêu cầu bảo trì, chỉ đọc.
     public List<String> getRequests() {

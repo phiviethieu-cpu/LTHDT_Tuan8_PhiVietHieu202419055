@@ -13,19 +13,20 @@ import services.MaintenanceService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // Gom việc đăng ký và hủy đăng ký các service với thiết bị vào một chỗ.
 public class DeviceMonitoringCoordinator implements AutoCloseable {
-    private List<TeachingDevice> devices;
-    private ConsoleNotificationService notificationService;
-    private DeviceAuditLogger auditLogger;
-    private MaintenanceService maintenanceService;
+    private final List<TeachingDevice> devices;
+    private final ConsoleNotificationService notificationService;
+    private final DeviceAuditLogger auditLogger;
+    private final MaintenanceService maintenanceService;
 
     // phai giu lai listener da dang ky, vi moi lan viet auditLogger::handleStatusChanged
     // Java tao ra 1 object moi nen remove bang object moi se khong go duoc
-    private StatusChangedListener statusListener;
-    private AlertListener notifyListener;
-    private AlertListener maintenanceListener;
+    private final StatusChangedListener statusListener;
+    private final AlertListener notifyListener;
+    private final AlertListener maintenanceListener;
 
     private boolean subscribed = false;
 
@@ -35,9 +36,9 @@ public class DeviceMonitoringCoordinator implements AutoCloseable {
                                        DeviceAuditLogger auditLogger,
                                        MaintenanceService maintenanceService) {
         this.devices = new ArrayList<>(devices);
-        this.notificationService = notificationService;
-        this.auditLogger = auditLogger;
-        this.maintenanceService = maintenanceService;
+        this.notificationService = Objects.requireNonNull(notificationService, "notificationService");
+        this.auditLogger = Objects.requireNonNull(auditLogger, "auditLogger");
+        this.maintenanceService = Objects.requireNonNull(maintenanceService, "maintenanceService");
 
         statusListener = this.auditLogger::handleStatusChanged;
         notifyListener = this.notificationService::handleAlert;
